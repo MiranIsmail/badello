@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ./backend
+    container_name: task_manager_backend
+    ports:
+      - "8000:80"
+    depends_on:
+      - postgres
+    env_file:
+      - .env  # Optional: use a .env file to set these variables
+    networks:
+      - task_manager_network
+
+  postgres:
+    image: postgres:13
+    container_name: task_manager_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=taskdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - task_manager_network
+
+  frontend:
+    build: ./frontend
+    container_name: task_manager_frontend
+    ports:
+      - "3000:80"
+    networks:
+      - task_manager_network
+
+networks:
+  task_manager_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+
