@@ -63,7 +63,6 @@
         const compu = document.getElementById('compu');
         const iddu = document.getElementById('iddu');
         
-        // Fetch tasks from the backend
         async function fetchTasks() {
             const response = await fetch('http://localhost:8000/tasks/');
             const tasks = await response.json();
@@ -80,7 +79,6 @@
                 taskList.appendChild(li);
             });
         }
-        // Handle form submission
         taskForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const title = titleInput.value;
@@ -123,7 +121,6 @@
           }
           tasku.reset();
         });
-        // Initialize by loading tasks
         fetchTasks();
     </script>
 </body>

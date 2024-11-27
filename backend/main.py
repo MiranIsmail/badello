@@ -5,38 +5,33 @@ from typing import List
 import asyncpg
 import os
 
-# Database connection parameters
 DB_HOST = os.getenv("DB_HOST", "postgres")
 DB_USER = os.getenv("DB_USER", "postgres")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "password")
 DB_NAME = os.getenv("DB_NAME", "taskdb")
 
-# Initialize FastAPI app
 app = FastAPI()
 
-# CORS configuration
 origins = [
-    "http://localhost:3000",  # Allow your frontend to connect
-    "http://localhost",       # Allow localhost
-    "http://127.0.0.1",      # Allow localhost
+    "http://localhost:3000",
+    "http://localhost",
+    "http://127.0.0.1"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Allow all origins listed above
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],    # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],    # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
-# Pydantic model for tasks
 class Task(BaseModel):
     title: str
     description: str
     completed: bool = False
     id: int | None = None
 
-# Database connection (using asyncpg)
 async def get_db():
     conn = await asyncpg.connect(
         user=DB_USER,
@@ -49,7 +44,6 @@ async def get_db():
 @app.on_event("startup")
 async def startup():
     conn = await get_db()
-    # Create the tasks table if it doesn't exist
     await conn.execute('''
     CREATE TABLE IF NOT EXISTS tasks (
         id SERIAL PRIMARY KEY,
