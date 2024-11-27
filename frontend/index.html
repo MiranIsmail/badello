@@ -3,24 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+    <title>Badello</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
 </head>
 <body>
+    <div class="container">
+    <div class="box">
     <h1>Task Manager</h1>
     <form id="task-form">
         <input type="text" id="title" placeholder="Task Title" required>
         <textarea id="description" placeholder="Task Description"></textarea>
+        <div class="container1">
+        <div class="box1">
+        <input type="checkbox" id="comp">
+        </div>
+        <div class="box1">
+        <h6>completed?</h6>
+        </div>
+        </div>
         <button type="submit">Add Task</button>
     </form>
+    <h1>Delete Task</h1>
+    <form id="del_form">
+      <input type="number" id="idd" placeholder="task id" step="1" min="0">
+      <button type="submit">Delete task</button>
+    </form>
+    <h1>Task Updater</h1>
+    <form id="tasku">
+        <input type="text" id="titleu" placeholder="Task Title">
+        <textarea id="descriptionu" placeholder="Task Description"></textarea>
+        <div class="container1">
+        <div class="box1">
+        <input type="checkbox" id="compu">
+        </div>
+        <div class="box1">
+        <h6>completed?</h6>
+        </div>
+        </div>
+        <input type="number" id="iddu" placeholder="task id" step="1" min="0">
+        <button type="submit">Update Task</button>
+    </form>
+    </div>
+    <div class="box">
     <ul id="task-list"></ul>
-
+    </div>
+      </div>
     <script>
         const taskForm = document.getElementById('task-form');
         const titleInput = document.getElementById('title');
         const descriptionInput = document.getElementById('description');
         const taskList = document.getElementById('task-list');
-
+        const completed = document.getElementById('comp');
+        const del_form= document.getElementById('del_form');
+        const task_idd = document.getElementById('idd');
+        const tasku = document.getElementById('tasku');
+        const titleu = document.getElementById('titleu');
+        const descriptionu = document.getElementById('descriptionu');
+        const compu = document.getElementById('compu');
+        const iddu = document.getElementById('iddu');
+        
         // Fetch tasks from the backend
         async function fetchTasks() {
             const response = await fetch('http://localhost:8000/tasks/');
@@ -28,28 +70,59 @@
             taskList.innerHTML = '';
             tasks.forEach(task => {
                 const li = document.createElement('li');
-                li.textContent = `${task.title}: ${task.description}`;
+            li.style.backgroundColor = task.completed ? '#d4edda' : '#f8d7da';
+                        li.innerHTML = `
+            <span style="color: #007BFF; font-weight: bold;">Title: </span> ${task.title} <br>
+            <span style="color: #28A745; font-weight: bold;">Description: </span> ${task.description} <br>
+            <span style="color: #DC3545; font-weight: bold;">Status: </span> ${task.completed ? "Completed" : "Not Completed"} <br>
+            <span style="color: #6C757D; font-weight: bold;">Task ID: </span> ${task.id}
+        `;
                 taskList.appendChild(li);
             });
         }
-
         // Handle form submission
         taskForm.addEventListener('submit', async (event) => {
             event.preventDefault();
             const title = titleInput.value;
             const description = descriptionInput.value;
-
+            const completed_in = completed.checked;
             const response = await fetch('http://localhost:8000/tasks/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ title, description })
+                body: JSON.stringify({ title, description,completed:completed_in})
             });
-
             if (response.ok) {
                 fetchTasks();
             }
+            taskForm.reset();
         });
-
+        del_form.addEventListener('submit',async (event)=> {
+          event.preventDefault();
+          const task_idd_in = parseInt(task_idd.value,10);
+          const response = await fetch(`http://localhost:8000/tasks/${task_idd_in}`,{
+            method: 'DELETE'
+          });
+          if (response.ok) {
+            fetchTasks();
+          }
+          del_form.reset();
+        });
+        tasku.addEventListener('submit', async (event)=> {
+          event.preventDefault();
+          const title = titleu.value;
+          const description = descriptionu.value;
+          const completed_in = compu.checked;
+          const id = parseInt(iddu.value,10);
+          const response = await fetch(`http://localhost:8000/tasks/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, description,completed:completed_in})
+            });
+          if (response.ok) {
+                fetchTasks();
+          }
+          tasku.reset();
+        });
         // Initialize by loading tasks
         fetchTasks();
     </script>

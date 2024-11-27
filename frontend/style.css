@@ -1,35 +1,119 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #1c1e1f;
 }
 
+/* Heading Styles */
 h1 {
     text-align: center;
+    color: #555;
+    margin-top: 20px;
 }
 
+/* Form Styles */
 form {
-    display: flex;
-    flex-direction: column;
+    background: #F5F5F5;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     align-items: center;
-    margin-bottom: 20px;
 }
 
-input, textarea {
-    margin: 5px;
+form input[type="text"],
+form input[type="number"],
+form textarea,
+form button {
+    display: block;
+    width: 95%;
+    margin-bottom: 15px;
     padding: 10px;
-    width: 300px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-button {
-    padding: 10px;
-    margin-top: 10px;
+form input[type="checkbox"] {
+    transform: scale(1.2);
+    padding-left: 20px;
 }
 
-ul {
+form button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* Task List Styles */
+#task-list {
+    max-width: 1200px;
+    margin: 20px auto;
     list-style: none;
-    padding-left: 0;
+    padding: 0;
+    text-align:center;
 }
 
-li {
-    margin: 5px 0;
+#task-list li {
+    background: #fff;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
 }
 
+#task-list li span {
+    font-weight: bold;
+    display: flex;
+}
+
+/* Checkbox alignment */
+form input[type="checkbox"] {
+    vertical-align: middle;
+}
+
+/* Add spacing for delete form */
+#del_form {
+    margin-top: 20px;
+}
+
+/* Updater Form */
+#tasku {
+    margin-top: 20px;
+}
+
+.container {
+  display: flex; /* Enables flexbox layout */
+  /*gap: 20px; /* Optional: Adds spacing between the divs */
+  }
+.box {
+  border: 1px solid black;
+  padding: 20px;
+  }
+.box:first-child {
+  flex: 0 0 200px; /* Fix the width of the first box to 200px */
+}
+
+.box:last-child {
+  flex: 1; /* Make the second box flexible to fill the remaining space */
+}
+.container1{
+  display: flex;
+  align-items: center;
+}
+.box1{
+  flex:1;
+  text-align: center;
+}

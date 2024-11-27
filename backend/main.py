@@ -34,6 +34,7 @@ class Task(BaseModel):
     title: str
     description: str
     completed: bool = False
+    id: int | None = None
 
 # Database connection (using asyncpg)
 async def get_db():
