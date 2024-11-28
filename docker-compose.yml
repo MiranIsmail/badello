@@ -29,7 +29,9 @@ services:
     build: ./frontend
     container_name: badello_frontend
     ports:
-      - "3000:80"
+      - "8501:8501"
+    depends_on:
+      - backend
     networks:
       - badello_network
 
