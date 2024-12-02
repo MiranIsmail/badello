@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # Define FastAPI backend URL
-BACKEND_URL = "http://badello_backend:80/tasks/"
+BACKEND_URL = "http://backend-service:8080/tasks/"
 
 # Fetch tasks from the backend and update the session state
 def refresh_task_list():
@@ -65,17 +65,18 @@ st.title("Task Manager")
 st.sidebar.header("Navigation")
 
 # Fetch tasks section (only fetch once at the start)
-if 'tasks' not in st.session_state:
-    refresh_task_list()  # Initialize the task list on the first run
+if "tasks" not in st.session_state:
+    st.session_state.tasks=[]
+    #refresh_task_list()  # Initialize the task list on the first run
 
 st.subheader("Task List")
 for task in st.session_state.tasks:
     st.markdown(
         f"""
-        **Title**: {task['title']}  
-        **Description**: {task['description']}  
-        **Status**: {"Completed ✅" if task['completed'] else "Not Completed ❌"}  
-        **Task ID**: {task['id']}  
+        **Title**: {task['title']}
+        **Description**: {task['description']}
+        **Status**: {"Completed ✅" if task['completed'] else "Not Completed ❌"}
+        **Task ID**: {task['id']}
         ---
         """
     )
@@ -108,4 +109,3 @@ with st.sidebar.form("update_task_form"):
     update_submitted = st.form_submit_button("Update Task")
     if update_submitted:
         update_task(task_id, title, description, completed)
-

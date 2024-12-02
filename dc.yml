@@ -13,11 +13,11 @@ services:
     networks:
       - badello_network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80"]  # Check if backend is responsive on port 80
-      interval: 10s  # Interval between health checks
-      retries: 5     # Number of retries before considering the container unhealthy
-      timeout: 5s    # Timeout for each health check
-      start_period: 10s # Time to wait before the first health check
+      test: ["CMD", "curl", "-f", "http://localhost:80"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+      start_period: 10s
 
   postgres:
     image: postgres:13

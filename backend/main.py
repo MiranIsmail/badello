@@ -12,19 +12,19 @@ DB_NAME = os.getenv("DB_NAME", "taskdb")
 
 app = FastAPI()
 
-origins = [
-    "http://localhost:3000",
-    "http://localhost",
-    "http://127.0.0.1"
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
+##origins = [
+#    "http://localhost:3000",
+#    "http://localhost",
+#    "http://127.0.0.1"
+#]
+#
+#app.add_middleware(
+#    CORSMiddleware,
+#    allow_origins=["*"],
+#    allow_credentials=True,
+#    allow_methods=["*"],
+#    allow_headers=["*"]
+##)
 
 class Task(BaseModel):
     title: str
@@ -63,6 +63,10 @@ async def create_task(task: Task):
     ''', task.title, task.description, task.completed)
     await conn.close()
     return Task(id=result['id'], title=result['title'], description=result['description'], completed=result['completed'])
+
+@app.get("/")
+async def hi():
+    return {"hello":"tjomme"}
 
 @app.get("/tasks/", response_model=List[Task])
 async def get_tasks():
